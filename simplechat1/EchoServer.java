@@ -68,9 +68,9 @@ public class EchoServer extends AbstractServer {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-			}
-			else
-			this.sendToAllClients(client.getInfo("Login Id") + "> " + tempMsg);
+			} else
+				this.sendToAllClients(client.getInfo("Login Id") + "> "
+						+ tempMsg);
 		}
 		client.setInfo("Message Count", msgCount + 1);
 
@@ -124,14 +124,10 @@ public class EchoServer extends AbstractServer {
 			if (msgCount == 0) {
 				client.setInfo("Login Id",
 						message.substring(7, message.length()));
-<<<<<<< HEAD
 			}
 
-=======
-			} 
-			
->>>>>>> master
-		} else if (msgCount == 0 && !message.startsWith("#login")) {
+		}
+		else if (msgCount == 0 && !message.startsWith("#login")) {
 			try {
 				client.sendToClient("ERROR - No login ID specified.  Connection aborted.");
 			} catch (IOException e1) {
