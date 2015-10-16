@@ -73,13 +73,14 @@ public class EchoServer extends AbstractServer {
 		}
 		client.setInfo("Message Count", msgCount + 1);
 	}
-	
+
 	/**
 	 * This method overrides the one in the superclass. Called when the server
 	 * starts listening for connections.
 	 */
 	protected void serverStarted() {
-		System.out.println("Server listening for connections on port "+ getPort());
+		System.out.println("Server listening for connections on port "
+				+ getPort());
 	}
 
 	/**
@@ -93,7 +94,8 @@ public class EchoServer extends AbstractServer {
 	@Override
 	protected void clientConnected(ConnectionToClient client) {
 		client.setInfo("Message Count", 0);
-		System.out.println("A new client is attempting to connect to the server.");
+		System.out
+				.println("A new client is attempting to connect to the server.");
 	}
 
 	@Override
@@ -102,7 +104,7 @@ public class EchoServer extends AbstractServer {
 	}
 
 	// Class methods ***************************************************
-	
+
 	/**
 	 * This method receives the login message and checks if it is valid and is
 	 * the first message sent. Called when the client attempts to login.
@@ -116,20 +118,13 @@ public class EchoServer extends AbstractServer {
 	 *            - used to set client info
 	 */
 	private void loginId(int msgCount, String message, ConnectionToClient client) {
-		if (message.contains("#login")) {
+		if (message.startsWith("#login")) {
 			if (msgCount == 0) {
-				client.setInfo("Login Id",message.substring(7, message.length()));
-			}
-			else
-			{
-				try {
-					client.sendToClient("ERROR - Login command issued after intial login");
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		} else if (msgCount == 0 && !message.contains("#login")) {
+				client.setInfo("Login Id",
+						message.substring(7, message.length()));
+			} 
+			
+		} else if (msgCount == 0 && !message.startsWith("#login")) {
 			try {
 				client.sendToClient("ERROR - No login ID specified.  Connection aborted.");
 			} catch (IOException e1) {
@@ -142,7 +137,7 @@ public class EchoServer extends AbstractServer {
 			}
 		}
 	}
-	
+
 	/**
 	 * This method is responsible for the creation of the server instance (there
 	 * is no UI in this phase).
