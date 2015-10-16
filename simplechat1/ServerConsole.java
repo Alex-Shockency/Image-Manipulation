@@ -55,7 +55,7 @@ public class ServerConsole implements ChatIF {
 				port = Integer.parseInt(tempPort);
 				message = message.substring(0, 8);
 			} catch (Exception e) {
-				System.out.println("Error: invalid port #");
+				System.out.println("ERROR - invalid port #");
 			}
 		}
 		switch (message) {
@@ -91,7 +91,7 @@ public class ServerConsole implements ChatIF {
 				}
 			} else {
 				System.out
-						.println("Error: Server must be closed before changing port");
+						.println("ERROR - Server must be closed before changing port");
 			}
 			break;
 		case "#start":
@@ -103,7 +103,7 @@ public class ServerConsole implements ChatIF {
 					e.printStackTrace();
 				}
 			} else {
-				System.out.println("Error: Server already listening");
+				System.out.println("ERROR - Server already listening");
 			}
 			break;
 		case "#getport":
