@@ -3,6 +3,8 @@
 // license found at www.lloseng.com 
 
 import java.io.*;
+import java.util.LinkedList;
+
 import ocsf.server.*;
 
 /**
@@ -23,6 +25,7 @@ public class EchoServer extends AbstractServer
    * The default port to listen on.
    */
   final public static int DEFAULT_PORT = 5555;
+  LinkedList<String> validIDs;
   
   //Constructors ****************************************************
   
@@ -48,8 +51,70 @@ public class EchoServer extends AbstractServer
   public void handleMessageFromClient
     (Object msg, ConnectionToClient client)
   {
-    System.out.println("Message received: " + msg + " from " + client);
-    this.sendToAllClients(msg);
+	String tempMsg=msg.toString();
+	int msgCount=(int) client.getInfo("Message Count");
+	//Check if loginId is correctly sent
+	loginId(msgCount,tempMsg,client);
+	//----------------------------------
+	//print message back to server.
+    System.out.println("Message received: " +  msg.toString() + " from " + client.getInfo("Login Id")+" "+ client);
+    if(msgCount==0)
+    {
+    	System.out.println(client.getInfo("Login Id")+" has logged on.");
+    	this.sendToAllClients(client.getInfo("Login Id")+" has logged on.");
+    }
+    if(tempMsg.trim().equals("#logoff"))
+	{
+		try {
+			client.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+    if(msgCount!=0)
+    {
+    this.sendToAllClients("*" + client.getInfo("Login Id") +"> "+ tempMsg);
+    }
+    client.setInfo("Message Count", msgCount+1);
+  }
+  /**
+   * This method receives the login message and checks if it is valid and is the first message sent.  
+   * Called when the client attempts to login.
+   * @param msgCount-Keeps track of the number of messages sent by user used to check if login command is issued later.
+   * @param message-message received by server from client.
+   * @param client- used to set client info
+   */
+  private void loginId(int msgCount,String message,ConnectionToClient client)
+  {
+	  if(message.contains("#login"))
+		{
+			if(msgCount==0)
+			{
+			client.setInfo("Login Id", message.substring(7,message.length()));
+			}
+			else if(msgCount!=0)
+			{
+				try {
+					client.sendToClient("Error: Login command issued");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		else if(msgCount==0&&!message.contains("#login"))
+		{
+			try {
+				client.sendToClient("ERROR - No login ID specified.  Connection aborted.");
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			try {
+				client.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
   }
     
   /**
@@ -70,6 +135,15 @@ public class EchoServer extends AbstractServer
   {
     System.out.println
       ("Server has stopped listening for connections.");
+  }
+  
+ @Override protected void clientConnected(ConnectionToClient client) {
+	  client.setInfo("Message Count",0);
+	  System.out.println("A new client is attempting to connect to the server.");
+  }
+  
+ @Override synchronized protected void clientDisconnected(ConnectionToClient client) {
+	  System.out.println(client.getInfo("Login Id")+" has disconnected.");
   }
   
   //Class methods ***************************************************
@@ -93,9 +167,7 @@ public class EchoServer extends AbstractServer
     {
       port = DEFAULT_PORT; //Set port to 5555
     }
-	
     EchoServer sv = new EchoServer(port);
-    
     try 
     {
       sv.listen(); //Start listening for connections
@@ -105,5 +177,6 @@ public class EchoServer extends AbstractServer
       System.out.println("ERROR - Could not listen for clients!");
     }
   }
+  
 }
 //End of EchoServer class
