@@ -143,7 +143,7 @@ public class ChatClient extends AbstractClient {
 					break;
 				}
 				setHost(argument);
-				clientUI.display("Host set to: "+argument);
+				clientUI.display("Host set to: " + argument);
 				break;
 			case "setport":
 				if (isConnected()) {
@@ -151,7 +151,7 @@ public class ChatClient extends AbstractClient {
 				}
 				try {
 					setPort(Integer.parseInt(argument));
-					clientUI.display("Port set to: "+argument);
+					clientUI.display("Port set to: " + argument);
 				} catch (Exception e) {
 					System.out.println("ERROR: invalid format");
 				}

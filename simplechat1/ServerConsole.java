@@ -38,17 +38,17 @@ public class ServerConsole implements ChatIF {
 			BufferedReader fromConsole = new BufferedReader(
 					new InputStreamReader(System.in));
 			String message;
-			int port=0;
+			int port = 0;
 			while (true) {
 				message = fromConsole.readLine();
-				handleServerCommand(message,port);
-			}//end while(true)
+				handleServerCommand(message, port);
+			}// end while(true)
 		} catch (Exception ex) {
 			System.out.println("Unexpected error while reading from console!");
 		}
-	}//end accept()
-	private void handleServerCommand(String message,int port)
-	{
+	}// end accept()
+
+	private void handleServerCommand(String message, int port) {
 		if (message.contains("#setport")) {
 			String tempPort = message.trim().substring(8);
 			try {
@@ -85,13 +85,13 @@ public class ServerConsole implements ChatIF {
 			break;
 		case "#setport":
 			if (!server.isListening()) {
-				if(port!=0)
-				{
-				server.setPort(port);
-				System.out.println("Port set to: "+port);
+				if (port != 0) {
+					server.setPort(port);
+					System.out.println("Port set to: " + port);
 				}
 			} else {
-				System.out.println("Error: Server must be closed before changing port");
+				System.out
+						.println("Error: Server must be closed before changing port");
 			}
 			break;
 		case "#start":
@@ -116,7 +116,8 @@ public class ServerConsole implements ChatIF {
 				System.out.println("SERVER MSG> " + message);
 			}
 		}
-	}//end handleServerCommand(String message,int port)
+	}// end handleServerCommand(String message,int port)
+
 	public static void main(String[] args) {
 		String host = "";
 		int port = 0; // The port number
@@ -143,4 +144,4 @@ public class ServerConsole implements ChatIF {
 		ServerConsole serverchat = new ServerConsole(host, port);
 		serverchat.accept(); // Wait for console data
 	}
-}//end class
+}// end class
