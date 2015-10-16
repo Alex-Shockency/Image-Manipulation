@@ -4,11 +4,11 @@
 
 package client;
 
-import ocsf.client.*;
-import common.*;
+import java.io.IOException;
 
-import java.io.*;
-import java.util.LinkedList;
+import ocsf.client.AbstractClient;
+
+import common.ChatIF;
 
 /**
  * This class overrides some of the methods defined in the abstract superclass
@@ -139,7 +139,7 @@ public class ChatClient extends AbstractClient {
 				break;
 			case "sethost":
 				if (isConnected()) {
-					clientUI.display("ERROR: client is already connected to a server");
+					clientUI.display("ERROR - client is already connected to a server");
 					break;
 				}
 				setHost(argument);
@@ -147,7 +147,7 @@ public class ChatClient extends AbstractClient {
 				break;
 			case "setport":
 				if (isConnected()) {
-					clientUI.display("ERROR: client is already connected to a server");
+					clientUI.display("ERROR - client is already connected to a server");
 				}
 				try {
 					setPort(Integer.parseInt(argument));
@@ -158,7 +158,7 @@ public class ChatClient extends AbstractClient {
 				break;
 			case "login":
 				if (isConnected()) {
-					clientUI.display("ERROR: client is already connected to a server");
+					clientUI.display("ERROR - client is already connected to a server");
 				} else {
 					openConnection();
 					sendToServer("#login " + id);

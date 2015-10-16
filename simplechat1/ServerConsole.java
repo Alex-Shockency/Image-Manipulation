@@ -49,8 +49,7 @@ public class ServerConsole implements ChatIF {
 	private void handleServerCommand(String message,int port)
 	{
 		if (message.contains("#setport")) {
-			
-			String tempPort = message.replaceAll(" ", "").substring(8);
+			String tempPort = message.trim().substring(8);
 			try {
 				port = Integer.parseInt(tempPort);
 				message = message.substring(0, 8);
@@ -111,12 +110,12 @@ public class ServerConsole implements ChatIF {
 			break;
 		}
 		if (message.length() != 0) {
-			if (message.charAt(0) != '#') {
+			if (message.trim().charAt(0) != '#') {
 				server.sendToAllClients("SERVER MSG> " + message);
 				System.out.println("SERVER MSG> " + message);
 			}
 		}
-	}
+	}//end handleServerCommand(String message,int port)
 	public static void main(String[] args) {
 		String host = "";
 		int port = 0; // The port number
