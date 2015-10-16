@@ -9,7 +9,6 @@ import common.ChatIF;
 public class ServerConsole implements ChatIF {
 	final public static int DEFAULT_PORT = 5555;
 	EchoServer server;
-	ChatClient client;
 
 	@Override
 	public void display(String message) {
@@ -17,7 +16,6 @@ public class ServerConsole implements ChatIF {
 	}
 
 	public ServerConsole(String host, int port) {
-
 		try {
 			// client= new ChatClient("server", host, port, this);
 			server = new EchoServer(port);
@@ -26,7 +24,6 @@ public class ServerConsole implements ChatIF {
 			// TODO Auto-generated catch block
 			System.out.println("ERROR - Could not listen for clients!");
 		}
-
 	}
 
 	/**
