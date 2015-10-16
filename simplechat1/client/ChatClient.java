@@ -143,17 +143,21 @@ public class ChatClient extends AbstractClient {
 					break;
 				}
 				setHost(argument);
-				clientUI.display("Host set to: " + argument);
+				if (argument.length() == 0) {
+					clientUI.display("ERROR - no argument provided");
+				} else
+					clientUI.display("Host set to: " + argument);
 				break;
 			case "setport":
 				if (isConnected()) {
 					clientUI.display("ERROR - client is already connected to a server");
+					break;
 				}
 				try {
 					setPort(Integer.parseInt(argument));
 					clientUI.display("Port set to: " + argument);
 				} catch (Exception e) {
-					System.out.println("ERROR - invalid port # format");
+					clientUI.display("ERROR - invalid port # format");
 				}
 				break;
 			case "login":
@@ -173,6 +177,7 @@ public class ChatClient extends AbstractClient {
 			default:
 				clientUI.display("ERROR - invalid command");
 			}
+
 		}
 	}
 }// End of ChatClient class
