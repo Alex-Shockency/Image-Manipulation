@@ -124,8 +124,13 @@ public class EchoServer extends AbstractServer {
 			if (msgCount == 0) {
 				client.setInfo("Login Id",
 						message.substring(7, message.length()));
+<<<<<<< HEAD
 			}
 
+=======
+			} 
+			
+>>>>>>> master
 		} else if (msgCount == 0 && !message.startsWith("#login")) {
 			try {
 				client.sendToClient("ERROR - No login ID specified.  Connection aborted.");
